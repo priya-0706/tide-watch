@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TideWatch - About Us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --main-color: rgb(0, 255, 251);
+            --secondary-color: #1a365d;
+            --accent-color: #2d5a87;
+            --text-primary: #ffffff;
+            --text-secondary: #e2e8f0;
+            --text-dark: #2d3748;
+            --bg-gradient: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --glow: 0 0 20px rgba(0, 255, 251, 0.3);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-gradient);
+        }
+
+        .about-section {
+            min-height: 100vh;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23000fff" stop-opacity="0.1"/><stop offset="100%" stop-color="%2300ffff" stop-opacity="0.05"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="300" cy="800" r="120" fill="url(%23a)"/></svg>') center/cover;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(10px) rotate(-1deg); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--main-color), transparent);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 80px;
+            align-items: center;
+        }
+
+        .about-text {
+            padding: 0 20px;
+        }
+
+        .about-text h3 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: var(--main-color);
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .about-text p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+
+        .highlight-text {
+            color: var(--main-color);
+            font-weight: 600;
+        }
+
+        .about-visual {
+            position: relative;
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wave-animation {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(0, 255, 251, 0.1) 0%, 
+                rgba(0, 150, 255, 0.1) 50%, 
+                rgba(0, 255, 251, 0.1) 100%);
+            animation: wave 3s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { 
+                clip-path: polygon(0 45%, 15% 44%, 32% 50%, 54% 60%, 70% 61%, 84% 59%, 100% 52%, 100% 100%, 0 100%);
+            }
+            50% { 
+                clip-path: polygon(0 60%, 16% 65%, 34% 66%, 51% 62%, 67% 50%, 84% 45%, 100% 46%, 100% 100%, 0 100%);
+            }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--main-color), #0066ff, var(--main-color));
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .stat-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--glow);
+            border-color: var(--main-color);
+        }
+
+        .stat-number {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            color: var(--main-color);
+            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .stat-label {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px 30px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 251, 0.1) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.6s ease;
+        }
+
+        .feature-card:hover::after {
+            transform: scale(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 255, 251, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 255, 251, 0.2);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--main-color), #0066ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-icon i {
+            font-size: 30px;
+            color: #000;
+        }
+
+        .feature-card h4 {
+            font-size: clamp(1.3rem, 3vw, 1.6rem);
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card p {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 80px;
+            padding: 60px 40px;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(0, 255, 251, 0.1), transparent);
+            animation: rotate 8s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .cta-text {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--main-color), #0066ff);
+            color: #000;
+            font-weight: 600;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            padding: 15px 40px;
+            border-radius: 50px;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .cta-btn:hover::before {
+            left: 100%;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 255, 251, 0.4);
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+
+        /* Large Desktops (1400px+) */
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1600px;
+            }
+            
+            .about-grid {
+                gap: 80px;
+            }
+        }
+
+        /* Tablets and Small Laptops (768px - 1199px) */
+        @media (max-width: 1199px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .about-text {
+                order: 2;
+                padding: 0;
+            }
+
+            .about-visual {
+                order: 1;
+                height: 300px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 25px;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+            }
+        }
+
+        /* Small Tablets (600px - 767px) */
+        @media (max-width: 767px) {
+            .about-section {
+                padding: 60px 0;
+            }
+
+            .section-header {
+                margin-bottom: 40px;
+            }
+
+            .about-grid {
+                gap: 30px;
+                margin-bottom: 60px;
+            }
+
+            .about-visual {
+                height: 250px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                margin: 40px 0;
+            }
+
+            .stat-card {
+                padding: 30px 20px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                margin-top: 40px;
+            }
+
+            .feature-card {
+                padding: 30px 25px;
+            }
+
+            .cta-section {
+                margin-top: 60px;
+                padding: 40px 30px;
+                border-radius: 20px;
+            }
+        }
+
+        /* Mobile Devices (320px - 599px) */
+        @media (max-width: 599px) {
+            .about-section {
+                padding: 40px 0;
+            }
+
+            .container {
+                padding: 0 4%;
+            }
+
+            .section-header {
+                margin-bottom: 30px;
+            }
+
+            .about-grid {
+                gap: 25px;
+                margin-bottom: 50px;
+            }
+
+            .about-visual {
+                height: 200px;
+                border-radius: 15px;
+            }
+
+            .about-text h3 {
+                margin-bottom: 20px;
+            }
+
+            .about-text p {
+                margin-bottom: 15px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin: 30px 0;
+            }
+
+            .stat-card {
+                padding: 25px 20px;
+                border-radius: 15px;
+            }
+
+            .feature-card {
+                padding: 25px 20px;
+                border-radius: 15px;
+            }
+
+            .feature-icon {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 20px;
+            }
+
+            .feature-icon i {
+                font-size: 25px;
+            }
+
+            .cta-section {
+                margin-top: 50px;
+                padding: 30px 20px;
+                border-radius: 15px;
+            }
+
+            .cta-btn {
+                padding: 12px 30px;
+                border-radius: 30px;
+            }
+        }
+
+        /* Extra Small Devices (280px - 319px) */
+        @media (max-width: 319px) {
+            .container {
+                padding: 0 3%;
+            }
+
+            .about-section {
+                padding: 30px 0;
+            }
+
+            .about-visual {
+                height: 180px;
+            }
+
+            .stats-grid,
+            .features-grid {
+                gap: 12px;
+            }
+
+            .stat-card,
+            .feature-card {
+                padding: 20px 15px;
+            }
+
+            .cta-section {
+                padding: 25px 15px;
+            }
+        }
+
+        /* Landscape Mobile */
+        @media (max-width: 912px) and (orientation: landscape) and (max-height: 500px) {
+            .about-section {
+                min-height: auto;
+                padding: 30px 0;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+                align-items: center;
+            }
+
+            .about-text {
+                order: 1;
+                text-align: left;
+            }
+
+            .about-visual {
+                order: 2;
+                height: 250px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 15px;
+                margin: 30px 0;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+
+            .feature-card {
+                padding: 20px 15px;
+            }
+        }
+
+        /* High DPI Displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .section-title {
+                text-rendering: optimizeLegibility;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        @media (prefers-contrast: high) {
+            :root {
+                --card-bg: rgba(255, 255, 255, 0.15);
+            }
+            
+            .stat-card,
+            .feature-card {
+                border-width: 2px;
+            }
+        }
+
+        /* Focus styles for accessibility */
+        .cta-btn:focus-visible {
+            outline: 3px solid var(--main-color);
+            outline-offset: 3px;
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Animation delays for staggered entrance */
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .feature-card:nth-child(2) { animation-delay: 0.2s; }
+        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Intersection Observer Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <section class="about-section">
+        <div class="container">
+            <!-- Section Header -->
+            <div class="section-header fade-in">
+                <h2 class="section-title">About TideWatch</h2>
+                <p class="section-subtitle">
+                    Protecting coastal communities through advanced early warning systems and real-time threat monitoring
+                </p>
+            </div>
+
+            <!-- Main About Content -->
+            <div class="about-grid fade-in">
+                <div class="about-text">
+                    <h3>Our Mission</h3>
+                    <p>
+                        At TideWatch, we believe that <span class="highlight-text">every coastal community deserves protection</span> from the increasing threats posed by climate change, extreme weather, and rising sea levels.
+                    </p>
+                    <p>
+                        Our cutting-edge monitoring system combines <span class="highlight-text">satellite data, ocean sensors, and AI-powered analytics</span> to provide accurate, real-time alerts that save lives and protect property.
+                    </p>
+                    <p>
+                        Founded by a team of oceanographers, meteorologists, and emergency response specialists, we're dedicated to making coastal living safer for millions of people worldwide.
+                    </p>
+                </div>
+                <div class="about-visual">
+                    <div class="wave-animation"></div>
+                    <i class="fas fa-water fa-4x" style="color: var(--main-color); position: relative; z-index: 2;"></i>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card fade-in">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Continuous Monitoring</div>
+                </div>
+                <div class="stat-card fade-in">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Coastal Communities Protected</div>
+                </div>
+                <div class="stat-card fade-in">
+                    <div class="stat-number">15min</div>
+                    <div class="stat-label">Average Alert Response Time</div>
+                </div>
+                <div class="stat-card fade-in">
+                    <div class="stat-number">99.8%</div>
+                    <div class="stat-label">System Uptime Reliability</div>
+                </div>
+            </div>
+
+            <!-- Key Features -->
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-satellite-dish"></i>
+                    </div>
+                    <h4>Advanced Monitoring</h4>
+                    <p>
+                        State-of-the-art sensors and satellite technology provide comprehensive coverage of coastal conditions, weather patterns, and potential threats.
+                    </p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h4>Instant Alerts</h4>
+                    <p>
+                        Multi-channel notification system ensures critical information reaches you through SMS, email, mobile apps, and emergency broadcast systems.
+                    </p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Community Safety</h4>
+                    <p>
+                        Dedicated to protecting lives and property through proactive threat detection, emergency coordination, and community preparedness programs.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="cta-section fade-in">
+                <div class="cta-content">
+                    <h3 class="cta-title">Join the TideWatch Network</h3>
+                    <p class="cta-text">
+                        Be part of a safer coastal future. Sign up for alerts in your area and help us build stronger, more resilient communities.
+                    </p>
+                    <button class="cta-btn">Get Protected Today</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(el => observer.observe(el));
+        });
+
+        // Add click handler for CTA button
+        document.querySelector('.cta-btn').addEventListener('click', () => {
+            // Add your navigation logic here
+            console.log('Navigate to sign-up page');
+        });
+
+        // Add smooth hover effects
+        const cards = document.querySelectorAll('.stat-card, .feature-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>

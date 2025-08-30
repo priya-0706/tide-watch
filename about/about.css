@@ -1,0 +1,725 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+/* ===== BASE STYLES ===== */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-weight: 400;
+    outline: none;
+    list-style-type: none;
+    font-family: "Poppins", sans-serif;
+}
+
+:root {
+    --main-color: rgb(0, 255, 251);
+    --text-primary: #ffffff;
+    --text-secondary: #e0e0e0;
+    --bg-overlay: rgba(0, 0, 0, 0.5);
+    --transition: all 0.3s ease;
+    --border-radius: 0.5rem;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+    position: relative;
+    width: 100%;
+    min-height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+}
+
+.hero-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-overlay);
+    z-index: 0;
+}
+
+/* ===== HERO CONTENT ===== */
+.hero-content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    padding: 2rem 5%;
+    height: 100%;
+    max-width: 1400px;
+    width: 100%;
+    align-items: center;
+}
+
+.hero-content .left,
+.hero-content .right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero-content .right {
+    padding-left: 0;
+}
+
+.hero-title {
+    text-align: left;
+    font-size: clamp(2.5rem, 7vw, 7rem);
+    font-weight: 700;
+    width: 100%;
+    border-left: 7px solid var(--main-color);
+    padding-left: 20px;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+    font-family: "Playfair Display", serif;
+}
+
+.hero-subtitle {
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    width: 100%;
+    max-width: 700px;
+    margin: 1.5rem 0 2rem 0;
+    text-align: left;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+
+.hero-btn {
+    display: inline-block;
+    font-size: clamp(1.1rem, 2.5vw, 1.9rem);
+    background-color: var(--main-color);
+    color: #000;
+    border: 2px solid var(--main-color);
+    border-radius: var(--border-radius);
+    padding: 1rem 2rem;
+    transition: var(--transition);
+    width: max-content;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.hero-btn:hover {
+    background-color: transparent;
+    color: var(--main-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+/* ===== RIGHT SIDE CONTENT ===== */
+.right h3 {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    margin-bottom: 2rem;
+    color: var(--main-color);
+    font-weight: 600;
+    text-align: center;
+}
+
+.right .cards-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.right .card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: var(--transition);
+}
+
+.right .card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--main-color);
+    box-shadow: 0 8px 25px rgba(0, 255, 251, 0.3);
+}
+
+.right .card i {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    color: var(--main-color);
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 255, 251, 0.1);
+    border-radius: var(--border-radius);
+    flex-shrink: 0;
+}
+
+.right .card h4 {
+    font-weight: 600;
+    font-size: clamp(1.1rem, 2.5vw, 2rem);
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.right .card small {
+    color: var(--text-secondary);
+    font-size: clamp(0.9rem, 2vw, 1.5rem);
+    line-height: 1.4;
+    display: block;
+}
+
+.service-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Large Desktops (1400px+) */
+@media (min-width: 1400px) {
+    .hero-content {
+        max-width: 1600px;
+        gap: 4rem;
+    }
+    
+    .hero-title {
+        font-size: 8rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 2.2rem;
+    }
+}
+
+/* Desktop (1200px - 1399px) */
+@media (max-width: 1399px) and (min-width: 1200px) {
+    .hero-content {
+        gap: 3rem;
+        padding: 2rem 4%;
+    }
+}
+
+/* Tablets and Small Laptops (768px - 1199px) */
+@media (max-width: 1199px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        padding: 2rem 5%;
+        text-align: center;
+    }
+
+    .hero-content .left,
+    .hero-content .right {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero-content .right {
+        padding-left: 0;
+    }
+
+    .hero-title {
+        text-align: center;
+        border-left: none;
+        border-bottom: 5px solid var(--main-color);
+        padding-left: 0;
+        padding-bottom: 1rem;
+        font-size: clamp(2.5rem, 8vw, 4.5rem);
+    }
+
+    .hero-subtitle {
+        text-align: center;
+        max-width: 100%;
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+    }
+
+    .right .cards-wrapper {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .right .card {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1.5rem;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .right .card i {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Small Tablets (600px - 767px) */
+@media (max-width: 767px) {
+    .hero-content {
+        padding: 1.5rem 4%;
+        gap: 2.5rem;
+    }
+
+    .hero-title {
+        font-size: clamp(2rem, 9vw, 3.5rem);
+        padding-bottom: 0.75rem;
+        border-bottom-width: 4px;
+    }
+
+    .hero-subtitle {
+        font-size: clamp(1rem, 4vw, 1.5rem);
+        margin: 1.5rem 0;
+    }
+
+    .hero-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: clamp(1rem, 3vw, 1.3rem);
+    }
+
+    .right .cards-wrapper {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+
+    .right .card {
+        padding: 1.5rem 1rem;
+        gap: 1rem;
+    }
+}
+
+/* Mobile Landscape (481px - 599px) */
+@media (max-width: 599px) and (min-width: 481px) {
+    .hero-content {
+        padding: 1.25rem 4%;
+        gap: 2rem;
+    }
+
+    .hero-title {
+        font-size: clamp(1.8rem, 10vw, 3rem);
+        padding-bottom: 0.5rem;
+        border-bottom-width: 3px;
+    }
+
+    .hero-subtitle {
+        font-size: clamp(0.9rem, 4vw, 1.3rem);
+        line-height: 1.4;
+    }
+
+    .right h3 {
+        font-size: clamp(1.5rem, 6vw, 2.2rem);
+        margin-bottom: 1.5rem;
+    }
+
+    .right .card {
+        padding: 1.25rem 1rem;
+        gap: 0.75rem;
+    }
+
+    .right .card i {
+        font-size: 1.8rem;
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* Mobile Portrait (320px - 480px) */
+@media (max-width: 480px) {
+    .hero-content {
+        padding: 1rem 3%;
+        gap: 1.5rem;
+    }
+
+    .hero-title {
+        font-size: clamp(1.6rem, 12vw, 2.5rem);
+        padding-bottom: 0.5rem;
+        border-bottom-width: 3px;
+        margin-bottom: 1rem;
+        padding-left: 0;
+        border-left: none;
+        border-bottom: 3px solid var(--main-color);
+    }
+
+    .hero-subtitle {
+        font-size: clamp(0.8rem, 5vw, 1.1rem);
+        line-height: 1.3;
+        margin: 1rem 0 1.5rem 0;
+    }
+
+    .hero-btn {
+        padding: 0.7rem 1.3rem;
+        font-size: clamp(0.9rem, 4vw, 1.1rem);
+        border-radius: 0.4rem;
+    }
+
+    .right h3 {
+        font-size: clamp(1.3rem, 7vw, 1.8rem);
+        margin-bottom: 1rem;
+    }
+
+    .right .cards-wrapper {
+        gap: 1rem;
+    }
+
+    .right .card {
+        padding: 1rem 0.8rem;
+        gap: 0.75rem;
+        border-radius: 0.4rem;
+    }
+
+    .right .card i {
+        font-size: 1.5rem;
+        width: 30px;
+        height: 30px;
+        margin-bottom: 0.25rem;
+    }
+
+    .right .card h4 {
+        font-size: clamp(0.9rem, 4vw, 1.2rem);
+        margin-bottom: 0.25rem;
+    }
+
+    .right .card small {
+        font-size: clamp(0.7rem, 3vw, 0.9rem);
+        line-height: 1.3;
+    }
+}
+
+/* Extra Small Screens (280px - 319px) */
+@media (max-width: 319px) {
+    .hero-content {
+        padding: 0.75rem 2%;
+        gap: 1rem;
+    }
+
+    .hero-title {
+        font-size: 1.4rem;
+        padding-bottom: 0.4rem;
+        border-bottom-width: 2px;
+    }
+
+    .hero-subtitle {
+        font-size: 0.75rem;
+        line-height: 1.2;
+        margin: 0.75rem 0 1rem 0;
+    }
+
+    .hero-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .right h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .right .card {
+        padding: 0.75rem 0.5rem;
+        gap: 0.5rem;
+    }
+
+    .right .card i {
+        width: 25px;
+        height: 25px;
+        font-size: 1.2rem;
+    }
+
+    .right .card h4 {
+        font-size: 0.8rem;
+    }
+
+    .right .card small {
+        font-size: 0.65rem;
+    }
+}
+
+/* ===== LANDSCAPE ORIENTATION ===== */
+@media (max-width: 912px) and (orientation: landscape) and (max-height: 500px) {
+    .hero {
+        min-height: 100vh;
+    }
+
+    .hero-content {
+        grid-template-columns: 1.2fr 1fr;
+        gap: 2rem;
+        padding: 1rem 3%;
+        align-items: center;
+    }
+
+    .hero-title {
+        font-size: clamp(1.8rem, 6vw, 3rem);
+        border-left: 5px solid var(--main-color);
+        padding-left: 15px;
+        border-bottom: none;
+        text-align: left;
+        margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+        text-align: left;
+        font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+        margin: 1rem 0;
+    }
+
+    .right .cards-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .right .card {
+        flex-direction: row;
+        padding: 0.8rem;
+        text-align: left;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .right .card i {
+        margin-bottom: 0;
+        font-size: 1.5rem;
+        width: 30px;
+        height: 30px;
+    }
+
+    .right h3 {
+        font-size: clamp(1.3rem, 4vw, 2rem);
+        margin-bottom: 1rem;
+    }
+}
+
+/* ===== UTILITY CLASSES ===== */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mb-1 { margin-bottom: 1rem; }
+.mb-2 { margin-bottom: 2rem; }
+.mb-3 { margin-bottom: 3rem; }
+
+.mt-1 { margin-top: 1rem; }
+.mt-2 { margin-top: 2rem; }
+.mt-3 { margin-top: 3rem; }
+
+/* ===== DARK THEME SUPPORT ===== */
+.dark-theme {
+    color: var(--main-color);
+    background-color: transparent;
+}
+
+.dark-theme .hero::before {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.dark-theme .right .card {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 255, 251, 0.3);
+}
+
+.dark-theme .right .card:hover {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: var(--main-color);
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media (prefers-contrast: high) {
+    :root {
+        --bg-overlay: rgba(0, 0, 0, 0.8);
+    }
+    
+    .right .card {
+        border-width: 2px;
+    }
+}
+
+/* ===== HIGH DPI DISPLAYS ===== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .hero-title {
+        text-rendering: optimizeLegibility;
+    }
+    
+    .right .card {
+        border-width: 0.5px;
+    }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+    .hero {
+        background: white;
+        color: black;
+        padding-top: 0;
+        min-height: auto;
+    }
+    
+    .hero::before,
+    .hero-video {
+        display: none;
+    }
+    
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        color: black;
+    }
+    
+    .hero-title {
+        color: black;
+        border-color: black;
+        font-size: 2rem;
+    }
+    
+    .right .card {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        break-inside: avoid;
+        color: black;
+    }
+    
+    .hero-btn {
+        background: white;
+        border: 2px solid black;
+        color: black;
+    }
+}
+
+/* ===== CONTAINER QUERIES (Modern Browsers) ===== */
+@container (max-width: 600px) {
+    .right .cards-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== ULTRA-WIDE SCREENS ===== */
+@media (min-width: 1600px) {
+    .hero-content {
+        max-width: 1800px;
+        gap: 5rem;
+    }
+    
+    .right .cards-wrapper {
+        gap: 2rem;
+    }
+}
+
+/* ===== FOLDABLE DEVICES ===== */
+@media (max-width: 280px) {
+    .hero-content {
+        padding: 0.5rem 1%;
+        gap: 0.75rem;
+    }
+
+    .hero-title {
+        font-size: 1.2rem;
+        padding-left: 10px;
+        border-left-width: 3px;
+        padding-bottom: 0.3rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.7rem;
+        line-height: 1.2;
+        margin: 0.5rem 0;
+    }
+
+    .hero-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
+    }
+
+    .right .card {
+        padding: 0.5rem;
+        gap: 0.4rem;
+    }
+
+    .right .card i {
+        width: 20px;
+        height: 20px;
+        font-size: 1rem;
+    }
+}
+
+/* ===== SMOOTH ANIMATIONS ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-content .left,
+.hero-content .right {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.hero-content .right {
+    animation-delay: 0.2s;
+}
+
+/* ===== FOCUS STYLES FOR ACCESSIBILITY ===== */
+.hero-btn:focus-visible {
+    outline: 2px solid var(--main-color);
+    outline-offset: 2px;
+}
+
+.right .card:focus-within {
+    transform: translateY(-5px);
+    border-color: var(--main-color);
+}
+
+/* ===== HOVER EFFECTS OPTIMIZATION ===== */
+@media (hover: hover) {
+    .right .card {
+        transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+}
+
+@media (hover: none) {
+    .right .card:hover {
+        transform: none;
+    }
+    
+    .hero-btn:hover {
+        transform: none;
+    }
+}
