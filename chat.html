@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coastal Community Chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .message-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #4b5563 #1f2937;
+        }
+        .message-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .message-container::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        .message-container::-webkit-scrollbar-thumb {
+            background-color: #4b5563;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 flex flex-col h-screen antialiased text-white">
+
+    <!-- Alert Modal (Hidden by default) -->
+    <div id="alert-modal-container" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
+        <div class="bg-gray-800 rounded-lg p-6 shadow-xl w-80">
+            <h3 class="text-lg font-bold mb-4 text-white">Send Alert Message</h3>
+            <textarea id="alert-input" rows="3" class="w-full bg-gray-700 text-white border border-gray-600 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Enter your alert message..."></textarea>
+            <div class="flex justify-end mt-4 space-x-2">
+                <button id="cancel-alert" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">Cancel</button>
+                <button id="send-alert" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Banner -->
+    <div id="alert-banner" class="hidden bg-red-700 text-white p-4 text-center font-bold relative transition-all duration-300">
+        <p id="alert-text" class="mr-8"></p>
+        <button id="close-alert-banner" class="absolute top-2 right-2 text-white text-lg font-bold p-1 rounded-full hover:bg-red-800 transition">&times;</button>
+    </div>
+
+            <!-- Header and Controls -->
+    <header class="bg-gray-800 text-white p-4 shadow-lg flex items-center justify-between">
+        <h1 class="text-2xl font-bold">Coastal Community Chat</h1>
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors">Back to Home</a>
+            <button id="connect-button" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">Connect to Broadcast</button>
+            <button id="disconnect-button" class="hidden bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">Disconnect</button>
+        </div>
+    </header>
+
+    <!-- Main Chat and Info Section -->
+    <main class="flex flex-1 overflow-hidden p-4">
+        <!-- Chat Window -->
+        <div class="flex flex-col flex-1 bg-gray-800 rounded-xl shadow-lg p-6 mr-4 overflow-hidden">
+            <div id="messages-container" class="message-container space-y-4 pr-2 min-h-0">
+                <div class="flex items-start justify-start">
+                    <div class="flex flex-col max-w-sm rounded-lg p-3 shadow-md bg-gray-700 text-white rounded-bl-none">
+                        <span class="text-xs font-semibold mb-1 text-gray-400">System</span>
+                        <p class="text-sm">Welcome to Coastal Community Chat! Click "Connect to Broadcast" to join the live chat.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input Form -->
+            <form id="chat-form" class="mt-6 flex items-center">
+                <input type="text" id="new-message" placeholder="Connect to broadcast first..." disabled class="flex-1 p-3 rounded-l-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+                <button type="submit" id="send-button" disabled class="bg-gray-500 text-white font-bold py-3 px-6 rounded-r-lg transition-colors shadow-md cursor-not-allowed">Send</button>
+            </form>
+        </div>
+
+        <!-- User Info Card -->
+        <aside class="w-80 bg-gray-800 rounded-xl shadow-lg p-6 flex flex-col items-center">
+            <h2 class="text-xl font-bold mb-4">Your Profile</h2>
+            <div class="w-24 h-24 rounded-full mb-4 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                <span id="user-initials" class="text-2xl font-bold text-white">?</span>
+            </div>
+            <div class="bg-gray-700 p-4 rounded-lg text-center break-words w-full">
+                <p class="text-sm text-gray-400 mb-2">Your broadcast username</p>
+                <p id="user-id-display" class="font-mono text-white text-sm break-all">Not connected</p>
+            </div>
+            <div class="mt-4 text-center w-full">
+                <p class="text-xs text-gray-400">Status: <span id="connection-status" class="text-red-400">Disconnected</span></p>
+                <p class="text-xs text-gray-400 mt-1">Users online: <span id="users-count">0</span></p>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        // WebSocket connection and state
+        let ws = null;
+        let isConnected = false;
+        let currentUsername = '';
+        let currentUserId = '';
+        
+        // DOM elements
+        const messagesContainer = document.getElementById('messages-container');
+        const chatForm = document.getElementById('chat-form');
+        const newMessageInput = document.getElementById('new-message');
+        const sendButton = document.getElementById('send-button');
+        const userIdDisplay = document.getElementById('user-id-display');
+        const userInitials = document.getElementById('user-initials');
+        const connectionStatus = document.getElementById('connection-status');
+        const usersCount = document.getElementById('users-count');
+        const connectButton = document.getElementById('connect-button');
+        const disconnectButton = document.getElementById('disconnect-button');
+        
+        // Generate random username
+        function generateRandomUsername() {
+            const adjectives = ['Coastal', 'Ocean', 'Wave', 'Tide', 'Beach', 'Shore', 'Marine', 'Deep', 'Blue', 'Surf'];
+            const nouns = ['Walker', 'Watcher', 'Explorer', 'Guardian', 'Resident', 'Observer', 'Friend', 'Member', 'Neighbor', 'Helper'];
+            const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const noun = nouns[Math.floor(Math.random() * nouns.length)];
+            const num = Math.floor(Math.random() * 999) + 1;
+            return `${adj}${noun}${num}`;
+        }
+
+        // Connect to WebSocket
+        function connectToWebSocket() {
+            if (isConnected || ws) return;
+            
+            currentUsername = generateRandomUsername();
+            
+            // Your Hugging Face Space WebSocket URL
+            const wsUrl = `wss://welcometofightclub-websocket-app.hf.space/ws/broadcast?username=${encodeURIComponent(currentUsername)}`;
+            
+            console.log('🔗 Attempting to connect to:', wsUrl);
+            addSystemMessage(`Connecting as ${currentUsername}...`);
+            
+            try {
+                ws = new WebSocket(wsUrl);
+                
+                ws.onopen = function(event) {
+                    console.log('🔗 Connected to WebSocket broadcast');
+                    isConnected = true;
+                    updateConnectionUI();
+                };
+                
+                ws.onmessage = function(event) {
+                    try {
+                        const data = JSON.parse(event.data);
+                        handleWebSocketMessage(data);
+                    } catch (e) {
+                        console.error('Error parsing WebSocket message:', e);
+                        addSystemMessage('Error parsing server message');
+                    }
+                };
+                
+                ws.onclose = function(event) {
+                    console.log('🔌 WebSocket connection closed');
+                    isConnected = false;
+                    updateConnectionUI();
+                    ws = null;
+                };
+                
+                ws.onerror = function(error) {
+                    console.error('WebSocket error:', error);
+                    addSystemMessage('Connection error. Please try again.');
+                    isConnected = false;
+                    updateConnectionUI();
+                };
+                
+            } catch (error) {
+                console.error('Error creating WebSocket connection:', error);
+                addSystemMessage('Failed to connect. Please check the WebSocket URL.');
+            }
+        }
+
+        // Disconnect from WebSocket
+        function disconnectFromWebSocket() {
+            if (ws) {
+                ws.close();
+                ws = null;
+            }
+            isConnected = false;
+            currentUserId = '';
+            currentUsername = '';
+            updateConnectionUI();
+            addSystemMessage('Disconnected from broadcast chat');
+        }
+
+        // Update UI based on connection status
+        function updateConnectionUI() {
+            if (isConnected) {
+                connectionStatus.textContent = 'Connected';
+                connectionStatus.className = 'text-green-400';
+                userIdDisplay.textContent = currentUsername;
+                userInitials.textContent = currentUsername.charAt(0).toUpperCase() + (currentUsername.charAt(1) || '').toUpperCase();
+                
+                newMessageInput.disabled = false;
+                newMessageInput.placeholder = 'Type your message...';
+                sendButton.disabled = false;
+                sendButton.className = 'bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-r-lg transition-colors shadow-md cursor-pointer';
+                
+                connectButton.classList.add('hidden');
+                disconnectButton.classList.remove('hidden');
+            } else {
+                connectionStatus.textContent = 'Disconnected';
+                connectionStatus.className = 'text-red-400';
+                userIdDisplay.textContent = 'Not connected';
+                userInitials.textContent = '?';
+                usersCount.textContent = '0';
+                
+                newMessageInput.disabled = true;
+                newMessageInput.placeholder = 'Connect to broadcast first...';
+                sendButton.disabled = true;
+                sendButton.className = 'bg-gray-500 text-white font-bold py-3 px-6 rounded-r-lg transition-colors shadow-md cursor-not-allowed';
+                
+                connectButton.classList.remove('hidden');
+                disconnectButton.classList.add('hidden');
+            }
+        }
+
+        // Handle incoming WebSocket messages
+        function handleWebSocketMessage(data) {
+            console.log('📨 Received:', data);
+            
+            switch (data.type) {
+                case 'welcome':
+                    currentUserId = data.your_user_id;
+                    addSystemMessage(`Connected as ${data.your_username}`);
+                    if (data.connected_users) {
+                        usersCount.textContent = data.connected_users.length.toString();
+                    }
+                    break;
+                    
+                case 'broadcast_message':
+                    addMessage(data.sender_username, data.message, data.timestamp, false);
+                    break;
+                    
+                case 'broadcast_sent':
+                    addMessage('You', data.your_message, data.timestamp, true);
+                    break;
+                    
+                case 'user_list_update':
+                    usersCount.textContent = data.users.length.toString();
+                    break;
+                    
+                case 'user_left':
+                    addSystemMessage(data.message);
+                    usersCount.textContent = data.total_connections.toString();
+                    break;
+                    
+                case 'error':
+                    addSystemMessage(`Error: ${data.message}`, true);
+                    break;
+                    
+                default:
+                    console.log('Unknown message type:', data.type);
+            }
+        }
+
+        // Add system message
+        function addSystemMessage(text, isError = false) {
+            const messageElement = document.createElement('div');
+            messageElement.className = 'flex items-start justify-center animate-fade-in';
+            messageElement.innerHTML = `
+                <div class="flex flex-col max-w-sm rounded-lg p-3 shadow-md ${isError ? 'bg-red-600' : 'bg-gray-600'} text-white">
+                    <span class="text-xs font-semibold mb-1 text-gray-300">System</span>
+                    <p class="text-sm">${text}</p>
+                </div>
+            `;
+            messagesContainer.appendChild(messageElement);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Add chat message
+        function addMessage(senderName, text, timestamp, isMyMessage) {
+            const messageElement = document.createElement('div');
+            messageElement.className = `flex items-start ${isMyMessage ? 'justify-end' : 'justify-start'} animate-fade-in`;
+            
+            const messageTime = timestamp ? new Date(timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            messageElement.innerHTML = `
+                <div class="flex flex-col max-w-sm rounded-lg p-3 shadow-md ${
+                    isMyMessage 
+                        ? 'bg-blue-500 text-white rounded-br-none' 
+                        : 'bg-gray-700 text-white rounded-bl-none'
+                }">
+                    <span class="text-xs font-semibold mb-1 ${
+                        isMyMessage ? 'text-blue-200' : 'text-gray-400'
+                    }">
+                        ${senderName}
+                        <span class="ml-2 opacity-75">${messageTime}</span>
+                    </span>
+                    <p class="text-sm whitespace-pre-wrap">${text}</p>
+                </div>
+            `;
+            messagesContainer.appendChild(messageElement);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Send message to broadcast
+        function sendBroadcastMessage(text) {
+            if (!isConnected || !ws || !text.trim()) return;
+            
+            const message = {
+                type: 'broadcast',
+                message: text.trim()
+            };
+            
+            try {
+                ws.send(JSON.stringify(message));
+            } catch (error) {
+                console.error('Error sending message:', error);
+                addSystemMessage('Failed to send message', true);
+            }
+        }
+
+        // Event listeners
+        connectButton.addEventListener('click', () => {
+            connectToWebSocket();
+        });
+
+        disconnectButton.addEventListener('click', () => {
+            disconnectFromWebSocket();
+        });
+
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const messageText = newMessageInput.value;
+            if (messageText.trim() && isConnected) {
+                sendBroadcastMessage(messageText);
+                newMessageInput.value = '';
+            }
+        });
+
+        // Handle enter key in message input
+        newMessageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                chatForm.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fade-in {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fade-in {
+                animation: fade-in 0.3s ease-out;
+            }
+            #new-message:focus:not(:disabled) {
+                box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+            }
+            button:active:not(:disabled) {
+                transform: scale(0.98);
+            }
+            .pulse {
+                animation: pulse 2s infinite;
+            }
+            @keyframes pulse {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.5; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize the app
+        function initializeApp() {
+            updateConnectionUI();
+            addSystemMessage('Welcome to Coastal Community Chat! Click "Connect to Broadcast" to join the live chat.');
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', initializeApp);
+
+    </script>
+</body>
+</html>
